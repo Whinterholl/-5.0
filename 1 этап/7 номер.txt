@@ -1,0 +1,295 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int del(int y, int p, int x, int& number, int sum, int p1, bool f1)
+{
+    int k = y;
+    y = 0;
+    p -= x - k;
+    number = 2;
+    sum++;
+
+    while (number != 4)
+    {
+        switch (number)
+        {
+        case 1:
+        {
+            int k = 0;
+
+            if (y >= 0) // если база жива
+            {
+                if (x > p) // если союзников больше чем врагов
+                {
+                    k = x - p; // остаток на башню
+                    y -= k; // снимаем хп у башни
+
+                    // снимаем врага
+                    if (k >= 0 && !f1)
+                    {
+                        p -= x - k;
+                    }
+                    else
+                    {
+                        p -= x;
+                    }
+                }
+                else
+                {
+                    k = x - y;
+                    y -= x - k;
+
+                    if (k >= 0 && !f1)
+                    {
+                        p -= k;
+                    }
+                    else
+                    {
+                        p -= x;
+                    }
+                }
+            }
+            else
+            {
+                f1 = true;
+
+                if (x > p)
+                {
+                    k = x - p;
+
+                    if (y > 0) y -= k;
+
+                    if (p != 0)
+                    {
+                        p -= x;
+                    }
+                }
+                else
+                {
+                    k = x - y;
+                    y -= x - k;
+
+                    if (p != 0)
+                    {
+                        p -= x;
+                    }
+                }
+            }
+
+            sum += 1;
+
+            if (y <= 0 && p <= 0)
+            {
+                number = 4;
+                break;
+            }
+            else number = 2;
+        }
+        case 2:
+            if (p > 0)
+            {
+                if (x > 0)
+                {
+                    x -= p;
+                }
+            }
+            if (y <= 0 && p <= 0)
+            {
+                number = 4;
+                break;
+            }
+            else number = 3;
+
+        case 3:
+            if (y > 0)
+            {
+                if (p > 0) p += p1;
+                else
+                {
+                    p = 0;
+                    p += p1;
+                }
+            }
+
+            if (x <= 0)
+            {
+                number = 4;
+                sum = -1;
+            }
+            else number = 1;
+        }
+    }
+    return sum;
+}
+
+int rez(int number, int x, int y, int p, int p1, bool f1, bool f2, int sum)
+{
+    int sum_2 = 10000, sum_1;
+    while (number != 4)
+    {
+        switch (number)
+        {
+        case 1:
+        {
+            int k = 0, s1, s2;
+            s1 = x - y;
+            s2 = p - s1;
+
+            if (y <= p || s2 == x / 2)
+            {
+                sum_1 = del(y, p, x, number, sum, p1, f1);
+                if (sum_1 < sum_2 && sum_1 != -1) sum_2 = sum_1;
+            }
+
+            if (y >= 0) // если база жива
+            {
+                if (x > p) // если союзников больше чем врагов
+                {
+                    k = x - p; // остаток на башню
+                    y -= k; // снимаем хп у башни
+
+                    // снимаем врага
+                    if (k >= 0 && !f1)
+                    {
+                        p -= x - k;
+                    }
+                    else
+                    {
+                        p -= x;
+                    }
+                }
+                else
+                {
+                    k = x - y;
+                    y -= x - k;
+
+                    if (k >= 0 && !f1)
+                    {
+                        p -= k;
+                    }
+                    else
+                    {
+                        p -= x;
+                    }
+                }
+            }
+            else
+            {
+                f1 = true;
+
+                if (x > p)
+                {
+                    k = x - p;
+
+                    if (y > 0) y -= k;
+
+                    if (p != 0)
+                    {
+                        p -= x;
+                    }
+                }
+                else
+                {
+                    k = x - y;
+                    y -= x - k;
+
+                    if (p != 0)
+                    {
+                        p -= x;
+                    }
+                }
+            }
+
+            sum += 1;
+
+            if (y <= 0 && p <= 0)
+            {
+                number = 4;
+                break;
+            }
+            else number = 2;
+        }
+        case 2:
+            if (p > 0)
+            {
+                if (x > 0)
+                {
+                    x -= p;
+                }
+            }
+            if (y <= 0 && p <= 0)
+            {
+                number = 4;
+                break;
+            }
+            else number = 3;
+
+        case 3:
+            if (y > 0)
+            {
+                if (p > 0) p += p1;
+                else
+                {
+                    p = 0;
+                    p += p1;
+                }
+            }
+
+            if (x <= 0)
+            {
+                number = 4;
+                sum = -1;
+            }
+            else number = 1;
+        }
+    }
+
+    if (sum_2 < sum) sum = sum_2;
+
+    return sum;
+}
+
+int main()
+{
+    int x, y, p, p1, sum = 1, sum_1 = 0, number = 1;
+    bool f = false, f1 = false, f2 = false, f3 = false;
+
+    cin >> x >> y >> p;
+    p1 = p;
+
+    if (y <= x) 
+    {
+        sum = 1;
+        cout << sum << endl;
+        f = true;
+    }
+
+    if (x == p && y - x > p)
+    {
+        sum = -1;
+        cout << sum << endl;
+        f = true;
+    }
+
+    if (!f)
+    {
+        y -= x;
+
+        if (x * 2 < y && x < p) // когда моих солдат меньше, и база в два раза больше
+        {
+            number = 4;
+            sum = -1;
+        }
+        else f2 = true;
+
+        sum = rez(number, x, y, p, p1, f1, f2, sum);
+
+        cout << sum << endl;
+
+    }
+    
+    system("PAUSE");
+    return 0;
+}

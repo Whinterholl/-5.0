@@ -1,0 +1,42 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+	string str_1, str_2;
+	bool f = true, f1 = true;
+
+	cin >> str_1 >> str_2;
+
+	if (str_1.size() == str_2.size())
+	{
+		for (int i = 0; i < str_1.size(); i++)
+		{
+			f1 = true;
+			for (int j = 0; j < str_2.size(); j++)
+			{
+				if (str_2[j] == str_1[i])
+				{
+					str_2.erase(j, 1);
+					f1 = false;
+					break;
+				}
+			}
+
+			if (f1)
+			{
+				f = false;
+				i = str_1.size();
+			}
+		}
+	}
+	else f = false;
+
+	if (f) cout << "YES" << endl;
+	else cout << "NO" << endl;
+
+	system("PAUSE");
+	return 0;
+}

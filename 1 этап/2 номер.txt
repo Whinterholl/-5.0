@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+    int G1 = 0, G2 = 0, G3 = 0, G4 = 0, number;
+    int rez_1 = 0, rez_2 = 0, rezult = 0;
+
+    string G, G5;
+
+    cin >> G;
+    G5 = G[0];
+    G1 = stoi(G5);
+    G5 = G[2];
+    G2 = stoi(G5);
+
+    cin >> G;
+    G5 = G[0];
+    G3 = stoi(G5);
+    G5 = G[2];
+    G4 = stoi(G5);
+
+    cin >> number;
+
+    rez_1 = G1 + G3;
+    rez_2 = G2 + G4;
+
+    if (rez_1 <= rez_2)
+    {
+        if (number == 1)
+        {
+            rezult = rez_2 - rez_1;
+            if ((rezult + G3) <= G2) rezult++;
+
+        }
+        else
+        {
+            rezult = rez_2 - rez_1;
+            if (G1 <= G4) rezult++;
+        }
+    }
+
+    cout << rezult << endl;
+
+    system("PAUSE");
+    return 0;
+}

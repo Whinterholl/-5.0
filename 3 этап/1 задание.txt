@@ -1,0 +1,74 @@
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int main()
+{
+	set <string> line;
+	set <string> rezult;
+	
+	string str;
+	int n, k;
+	bool f = true;
+
+	cin >> n >> k;
+
+	for (int j = 0; j < k; j++)
+	{
+		cin >> str;
+		line.insert(str);
+	}
+
+	if (n == 1)
+	{
+		for (string s : line) rezult.insert(s);
+		f = false;
+	}
+
+	if (f)
+	{
+		cin >> k;
+
+		for (int j = 0; j < k; j++)
+		{
+			cin >> str;
+
+			if (line.count(str)) rezult.insert(str);
+		}
+
+		for (int i = 2; i < n; i++)
+		{
+			set <string> search;
+
+			cin >> k;
+
+			for (int j = 0; j < k; j++)
+			{
+				cin >> str;
+				if (rezult.count(str)) search.insert(str);
+			}
+
+			for (string m : rezult)
+				if (!search.count(m)) rezult.erase(m);
+		}
+	}
+	
+	cout << rezult.size() << endl;
+
+	if (n != 0)
+	{
+		int l = 0;
+		for (string s : rezult)
+		{
+			l++;
+			cout << s;
+			if (rezult.size() != l) cout << " ";
+		}
+	}
+
+	cout << endl;
+
+	system("PAUSE");
+	return 0;
+}
